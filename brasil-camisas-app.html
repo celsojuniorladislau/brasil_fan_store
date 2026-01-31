@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brasil Camisas - Seleção Oficial 🇧🇷</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background: #0f0f0f; overflow-x: hidden; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: -1px; }
+
+        .gradient-brasil {
+            background: linear-gradient(135deg, #ffd700 0%, #228b22 50%, #0047ab 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gradient-brasil::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: float 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
+        }
+
+        .animate-in { animation: slideUpFade 0.8s ease-out; }
+        .animate-scale { animation: scaleIn 0.6s ease-out; }
+
+        .card-premium {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid transparent;
+        }
+
+        .card-premium:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            border-color: #ffd700;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #228b22 0%, #1a6b1a 100%);
+            color: white;
+            padding: 14px 36px;
+            border-radius: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.4s ease;
+            border-radius: 12px;
+        }
+
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(34, 139, 34, 0.4); }
+
+        .product-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transform: rotate(15deg);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #ffd700, #228b22, #ffd700);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stagger {
+            opacity: 0;
+            animation: slideUpFade 0.8s ease-out forwards;
+        }
+
+        .stagger:nth-child(1) { animation-delay: 0.1s; }
+        .stagger:nth-child(2) { animation-delay: 0.2s; }
+        .stagger:nth-child(3) { animation-delay: 0.3s; }
+
+        .accent-line {
+            height: 4px;
+            background: linear-gradient(90deg, #ffd700 0%, #228b22 50%, transparent 100%);
+            width: 80px;
+            margin: 16px 0;
+            border-radius: 2px;
+        }
+
+        .price-tag {
+            font-weight: 700;
+            color: #228b22;
+            font-size: 28px;
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 8px;
+            margin: 32px 0;
+        }
+
+        .step {
+            height: 4px;
+            flex: 1;
+            background: #e0e0e0;
+            border-radius: 2px;
+            transition: all 0.4s ease;
+        }
+
+        .step.active {
+            background: linear-gradient(90deg, #ffd700 0%, #228b22 100%);
+        }
+
+        .input-premium {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .input-premium:focus {
+            outline: none;
+            border-color: #228b22;
+            box-shadow: 0 0 0 3px rgba(34, 139, 34, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            object-fit: cover;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            h2 { font-size: 24px; }
+            .card-premium { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const PRODUTOS = [
+            {
+                id: 1,
+                nome: 'HOME',
+                modelo: 'home',
+                preco: 149.90,
+                imagem: 'brazilian-national-team-yellow-jersey-front-view.jpg',
+                descricao: 'A camisa mais icônica',
+                subtitulo: 'Amarela e Verde',
+                badge: 'MAIS POPULAR'
+            },
+            {
+                id: 2,
+                nome: 'AWAY',
+                modelo: 'away',
+                preco: 149.90,
+                imagem: 'brazilian-national-team-blue-jersey-front-view.jpg',
+                descricao: 'Elegância pura',
+                subtitulo: 'Azul',
+                badge: null
+            },
+            {
+                id: 3,
+                nome: 'FEMININA',
+                modelo: 'feminina',
+                preco: 149.90,
+                imagem: 'brazilian-national-team-yellow-women-jersey.jpg',
+                descricao: 'Poder feminino',
+                subtitulo: 'Edição Especial',
+                badge: 'NOVO'
+            }
+        ];
+
+        const TAMANHOS = ['P', 'M', 'G', 'GG', 'XG'];
+
+        function BrasilCamisasApp() {
+            const [passo, setPasso] = useState(0);
+            const [carrinho, setCarrinho] = useState([]);
+            const [selecionado, setSelecionado] = useState(null);
+            const [tamanho, setTamanho] = useState('M');
+            const [quantidade, setQuantidade] = useState(1);
+            const [checkout, setCheckout] = useState({
+                nome: '',
+                email: '',
+                endereco: '',
+                cidade: '',
+                cep: ''
+            });
+            const [metodoPagamento, setMetodoPagamento] = useState('');
+            const [pedidoConfirmado, setPedidoConfirmado] = useState(null);
+
+            const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+
+            // PASSO 0: LANDING PAGE
+            if (passo === 0) {
+                return (
+                    <div className="bg-white min-h-screen">
+                        {/* Header */}
+                        <header className="sticky top-0 z-50 bg-white shadow-lg backdrop-blur-md bg-opacity-95">
+                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                                <div className="flex items-center gap-2 text-2xl font-bold">
+                                    <span className="text-3xl">🇧🇷</span>
+                                    <span className="shimmer-text text-2xl">BRASIL</span>
+                                </div>
+                                <button onClick={() => setPasso(2)} className="relative group">
+                                    <div className="text-3xl group-hover:scale-110 transition-transform">🛒</div>
+                                    {carrinho.length > 0 && (
+                                        <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                                            {carrinho.length}
+                                        </span>
+                                    )}
+                                </button>
+                            </div>
+                        </header>
+
+                        {/* HERO */}
+                        <section className="gradient-brasil h-96 flex items-center justify-center text-white relative">
+                            <div className="text-center z-10 animate-in">
+                                <h1 className="text-7xl font-black mb-6 drop-shadow-lg">SELEÇÃO</h1>
+                                <p className="text-2xl font-light mb-8 max-w-2xl drop-shadow-md">Veste o Brasil no peito. Cada camisa é uma história de paixão, tradição e glória.</p>
+                                <button onClick={() => setPasso(1)} className="btn-primary text-lg px-12 py-4">
+                                    ⚡ Explorar Coleção
+                                </button>
+                            </div>
+                        </section>
+
+                        {/* PRODUTOS */}
+                        <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="mb-16">
+                                    <h2 className="text-5xl font-black mb-4">Coleção Oficial</h2>
+                                    <div className="accent-line"></div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    {PRODUTOS.map((prod, i) => (
+                                        <div key={prod.id} className="stagger card-premium relative">
+                                            {prod.badge && <div className="product-badge">{prod.badge}</div>}
+                                            <img src={prod.imagem} alt={prod.nome} className="product-image mb-6" />
+                                            <h3 className="text-3xl font-black mb-1">{prod.nome}</h3>
+                                            <p className="text-gray-600 text-sm mb-2">{prod.subtitulo}</p>
+                                            <p className="text-gray-500 text-xs mb-6">{prod.descricao}</p>
+                                            <div className="text-center mb-8">
+                                                <div className="price-tag">R$ {prod.preco.toFixed(2)}</div>
+                                                <p className="text-xs text-gray-500 mt-2">Ou 12x de R$ {(prod.preco/12).toFixed(2)}</p>
+                                            </div>
+                                            <button
+                                                onClick={() => { setSelecionado(prod); setPasso(1); }}
+                                                className="w-full btn-primary"
+                                            >
+                                                Ver Detalhes
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* FEATURES */}
+                        <section className="py-20 px-4 bg-white">
+                            <div className="max-w-7xl mx-auto">
+                                <h2 className="text-5xl font-black mb-4">Por Que Escolher</h2>
+                                <div className="accent-line mb-12"></div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    {[
+                                        { icon: '⚡', titulo: 'Premium', desc: '100% Poliéster' },
+                                        { icon: '💨', titulo: 'Respirável', desc: 'Moisture-Wicking' },
+                                        { icon: '🏆', titulo: 'Durável', desc: 'Anti-desbotamento' },
+                                        { icon: '🌍', titulo: 'Oficial', desc: 'Certificado' }
+                                    ].map((feat, i) => (
+                                        <div key={i} className="stagger text-center p-8 rounded-16 hover:bg-gray-50">
+                                            <div className="text-6xl mb-4">{feat.icon}</div>
+                                            <h3 className="text-xl font-bold mb-2">{feat.titulo}</h3>
+                                            <p className="text-gray-600 text-sm">{feat.desc}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* CTA FINAL */}
+                        <section className="gradient-brasil py-20 text-white text-center">
+                            <div className="z-10 max-w-2xl mx-auto">
+                                <h2 className="text-5xl font-black mb-6">Pronto para a Glória?</h2>
+                                <p className="text-xl mb-8 font-light">Cada camisa é um compromisso com a seleção.</p>
+                                <button onClick={() => setPasso(1)} className="bg-white text-green-700 px-12 py-4 rounded-lg text-lg font-bold hover:bg-gray-100">
+                                    Começar Compra
+                                </button>
+                            </div>
+                        </section>
+
+                        {/* Footer */}
+                        <footer className="bg-gray-900 text-gray-400 py-12 px-4 text-center">
+                            <p className="mb-4">© 2024 Brasil Camisas - Loja Oficial da Seleção</p>
+                            <p className="text-sm">Feito com 💚 para torcedores brasileiros</p>
+                        </footer>
+                    </div>
+                );
+            }
+
+            // PASSO 1: SELEÇÃO
+            if (passo === 1) {
+                const produto = selecionado || PRODUTOS[0];
+
+                return (
+                    <div className="bg-white min-h-screen">
+                        <header className="sticky top-0 z-50 bg-white shadow-lg">
+                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                                <button onClick={() => { setPasso(0); setSelecionado(null); }} className="text-2xl hover:scale-110">←</button>
+                                <h1 className="text-xl font-bold">Passo 1 de 5</h1>
+                                <div></div>
+                            </div>
+                        </header>
+
+                        <div className="max-w-6xl mx-auto px-4 py-12">
+                            <div className="step-indicator">
+                                {[1,2,3,4,5].map((i) => <div key={i} className={`step ${i === 1 ? 'active' : ''}`}></div>)}
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+                                <div className="flex items-center justify-center">
+                                    <img src={produto.imagem} alt={produto.nome} className="product-image w-full max-w-md" />
+                                </div>
+
+                                <div className="space-y-8">
+                                    <div>
+                                        <h2 className="text-5xl font-black mb-2">{produto.nome}</h2>
+                                        <div className="accent-line"></div>
+                                        <p className="text-2xl text-gray-600 mt-4">{produto.subtitulo}</p>
+                                    </div>
+
+                                    {/* Tamanho */}
+                                    <div>
+                                        <label className="block text-sm font-bold uppercase tracking-wider mb-4">Tamanho</label>
+                                        <div className="flex gap-3 flex-wrap">
+                                            {TAMANHOS.map(t => (
+                                                <button
+                                                    key={t}
+                                                    onClick={() => setTamanho(t)}
+                                                    className={`w-14 h-14 rounded-lg font-bold transition-all ${
+                                                        tamanho === t
+                                                            ? 'bg-green-600 text-white shadow-lg scale-105'
+                                                            : 'bg-gray-100 hover:bg-gray-200'
+                                                    }`}
+                                                >
+                                                    {t}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Quantidade */}
+                                    <div>
+                                        <label className="block text-sm font-bold uppercase tracking-wider mb-4">Quantidade</label>
+                                        <div className="flex items-center gap-6">
+                                            <button
+                                                onClick={() => setQuantidade(Math.max(1, quantidade - 1))}
+                                                className="w-12 h-12 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-xl"
+                                            >
+                                                −
+                                            </button>
+                                            <span className="text-4xl font-black">{quantidade}</span>
+                                            <button
+                                                onClick={() => setQuantidade(quantidade + 1)}
+                                                className="w-12 h-12 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-xl"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Preço */}
+                                    <div className="bg-gradient-to-br from-yellow-50 to-green-50 p-8 rounded-lg border-2 border-green-200">
+                                        <p className="text-gray-600 mb-2">Valor Total</p>
+                                        <div className="price-tag text-4xl">R$ {(produto.preco * quantidade).toFixed(2)}</div>
+                                    </div>
+
+                                    <button
+                                        onClick={() => {
+                                            setCarrinho([...carrinho, { ...produto, quantidade, tamanho, id: Date.now() }]);
+                                            setQuantidade(1);
+                                            alert('✓ Adicionado ao carrinho!');
+                                        }}
+                                        className="w-full btn-primary py-4 text-lg"
+                                    >
+                                        🛒 Adicionar ao Carrinho
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Outros */}
+                            <div className="mt-12">
+                                <h3 className="text-3xl font-black mb-6">Veja Também</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    {PRODUTOS.filter(p => p.id !== produto.id).map(prod => (
+                                        <button
+                                            key={prod.id}
+                                            onClick={() => setSelecionado(prod)}
+                                            className="card-premium text-center"
+                                        >
+                                            <img src={prod.imagem} alt={prod.nome} className="product-image mb-4 w-full" />
+                                            <h4 className="text-2xl font-bold mb-2">{prod.nome}</h4>
+                                            <div className="price-tag">{prod.preco.toFixed(2)}</div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // PASSO 2: CARRINHO
+            if (passo === 2) {
+                return (
+                    <div className="bg-white min-h-screen">
+                        <header className="sticky top-0 z-50 bg-white shadow-lg">
+                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                                <button onClick={() => setPasso(1)} className="text-2xl">←</button>
+                                <h1 className="text-xl font-bold">Passo 2 de 5: Carrinho</h1>
+                                <div></div>
+                            </div>
+                        </header>
+
+                        <div className="max-w-4xl mx-auto px-4 py-12">
+                            <div className="step-indicator mb-8">
+                                {[1,2,3,4,5].map((i) => <div key={i} className={`step ${i <= 2 ? 'active' : ''}`}></div>)}
+                            </div>
+
+                            {carrinho.length === 0 ? (
+                                <div className="text-center py-24">
+                                    <p className="text-6xl mb-4">🛒</p>
+                                    <p className="text-3xl font-bold text-gray-700 mb-8">Carrinho Vazio</p>
+                                    <button onClick={() => setPasso(1)} className="btn-primary">
+                                        Continuar Comprando
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="space-y-4 mb-8">
+                                        {carrinho.map((item, i) => (
+                                            <div key={item.id} className="card-premium flex items-center justify-between p-6">
+                                                <div className="flex items-center gap-6">
+                                                    <img src={item.imagem} alt={item.nome} className="w-20 h-20 object-cover rounded-lg" />
+                                                    <div>
+                                                        <h3 className="font-bold text-lg">{item.nome}</h3>
+                                                        <p className="text-gray-600">Tamanho {item.tamanho} • Qtd: {item.quantidade}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <div className="price-tag">R$ {(item.preco * item.quantidade).toFixed(2)}</div>
+                                                    <button
+                                                        onClick={() => setCarrinho(carrinho.filter((_, idx) => idx !== i))}
+                                                        className="text-red-500 text-sm font-bold mt-2 hover:text-red-700"
+                                                    >
+                                                        Remover
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="card-premium p-8 mb-8">
+                                        <div className="flex justify-between items-center mb-4 pb-4 border-b-2">
+                                            <span className="font-bold">Subtotal:</span>
+                                            <span>R$ {total.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center text-2xl font-bold">
+                                            <span>Total:</span>
+                                            <span className="shimmer-text">R$ {total.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-4">
+                                        <button onClick={() => setPasso(1)} className="flex-1 btn-secondary">← Continuar</button>
+                                        <button onClick={() => setPasso(3)} className="flex-1 btn-primary">Checkout →</button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            // PASSO 3: CHECKOUT
+            if (passo === 3) {
+                return (
+                    <div className="bg-white min-h-screen">
+                        <header className="sticky top-0 z-50 bg-white shadow-lg">
+                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                                <button onClick={() => setPasso(2)} className="text-2xl">←</button>
+                                <h1 className="text-xl font-bold">Passo 3 de 5: Checkout</h1>
+                                <div></div>
+                            </div>
+                        </header>
+
+                        <div className="max-w-5xl mx-auto px-4 py-12">
+                            <div className="step-indicator mb-8">
+                                {[1,2,3,4,5].map((i) => <div key={i} className={`step ${i <= 3 ? 'active' : ''}`}></div>)}
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                <div className="lg:col-span-2 space-y-8">
+                                    <div>
+                                        <h2 className="text-3xl font-black mb-4">Dados de Entrega</h2>
+                                        <div className="accent-line"></div>
+                                        <div className="space-y-4 mt-6">
+                                            <input type="text" placeholder="Nome Completo" value={checkout.nome} onChange={(e) => setCheckout({...checkout, nome: e.target.value})} className="input-premium" />
+                                            <input type="email" placeholder="Email" value={checkout.email} onChange={(e) => setCheckout({...checkout, email: e.target.value})} className="input-premium" />
+                                            <input type="text" placeholder="Endereço Completo" value={checkout.endereco} onChange={(e) => setCheckout({...checkout, endereco: e.target.value})} className="input-premium" />
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <input type="text" placeholder="Cidade" value={checkout.cidade} onChange={(e) => setCheckout({...checkout, cidade: e.target.value})} className="input-premium" />
+                                                <input type="text" placeholder="CEP" value={checkout.cep} onChange={(e) => setCheckout({...checkout, cep: e.target.value})} className="input-premium" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h2 className="text-3xl font-black mb-4">Pagamento</h2>
+                                        <div className="accent-line"></div>
+                                        <div className="space-y-3 mt-6">
+                                            {[
+                                                { id: 'pix', icon: '✨', nome: 'PIX Instant', desc: 'Mais rápido' },
+                                                { id: 'cartao', icon: '💳', nome: 'Cartão', desc: 'Até 12x' },
+                                                { id: 'boleto', icon: '📋', nome: 'Boleto', desc: '3 dias' }
+                                            ].map(metodo => (
+                                                <button
+                                                    key={metodo.id}
+                                                    onClick={() => setMetodoPagamento(metodo.id)}
+                                                    className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
+                                                        metodoPagamento === metodo.id
+                                                            ? 'border-green-600 bg-green-50'
+                                                            : 'border-gray-300 hover:border-green-600'
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="flex items-center gap-3">
+                                                            <span className="text-2xl">{metodo.icon}</span>
+                                                            <div>
+                                                                <p className="font-bold">{metodo.nome}</p>
+                                                                <p className="text-xs text-gray-600">{metodo.desc}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className={`w-5 h-5 rounded-full border-2 ${metodoPagamento === metodo.id ? 'bg-green-600 border-green-600' : 'border-gray-300'}`}></div>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={() => {
+                                            if (!checkout.nome || !checkout.email || !checkout.endereco || !metodoPagamento) {
+                                                alert('Preencha todos os campos');
+                                                return;
+                                            }
+                                            setPasso(4);
+                                        }}
+                                        className="w-full btn-primary py-4 text-lg"
+                                    >
+                                        Continuar para Pagamento →
+                                    </button>
+                                </div>
+
+                                <div className="card-premium h-fit sticky top-24 p-6">
+                                    <h3 className="font-black text-lg mb-6">Resumo</h3>
+                                    <div className="space-y-3 mb-6 pb-6 border-b-2">
+                                        {carrinho.map((item) => (
+                                            <div key={item.id} className="flex justify-between text-sm">
+                                                <span>{item.nome} x{item.quantidade}</span>
+                                                <span className="font-bold">R$ {(item.preco * item.quantidade).toFixed(2)}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="flex justify-between text-lg font-bold text-green-600">
+                                        <span>Total:</span>
+                                        <span>R$ {total.toFixed(2)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // PASSO 4: PAGAMENTO
+            if (passo === 4) {
+                return (
+                    <div className="bg-white min-h-screen">
+                        <header className="sticky top-0 z-50 bg-white shadow-lg">
+                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                                <button onClick={() => setPasso(3)} className="text-2xl">←</button>
+                                <h1 className="text-xl font-bold">Passo 4 de 5: Pagamento</h1>
+                                <div></div>
+                            </div>
+                        </header>
+
+                        <div className="max-w-2xl mx-auto px-4 py-12">
+                            <div className="step-indicator mb-8">
+                                {[1,2,3,4,5].map((i) => <div key={i} className={`step ${i <= 4 ? 'active' : ''}`}></div>)}
+                            </div>
+
+                            {metodoPagamento === 'pix' ? (
+                                <div className="card-premium text-center p-12 animate-scale">
+                                    <h2 className="text-4xl font-black mb-4">Código PIX</h2>
+                                    <p className="text-gray-600 mb-8">Escaneie com seu app bancário</p>
+                                    <div className="bg-gray-100 p-12 rounded-lg mb-8 font-mono text-4xl">█ ▀ █</div>
+                                    <button onClick={() => alert('✓ Copiado!')} className="w-full btn-primary mb-4 py-4">Copiar Código PIX</button>
+                                    <button onClick={() => { setPedidoConfirmado({numero: Math.floor(100000 + Math.random() * 900000), data: new Date().toLocaleDateString('pt-BR'), nome: checkout.nome, email: checkout.email}); setPasso(5); }} className="w-full btn-primary py-4">✓ Confirmar Pagamento</button>
+                                </div>
+                            ) : (
+                                <div className="card-premium p-8 animate-scale">
+                                    <h2 className="text-3xl font-black mb-6">Dados do Cartão</h2>
+                                    <div className="space-y-4 mb-8">
+                                        <input type="text" placeholder="Número do Cartão" className="input-premium" />
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <input type="text" placeholder="MM/AA" className="input-premium" />
+                                            <input type="text" placeholder="CVV" className="input-premium" />
+                                        </div>
+                                    </div>
+                                    <button onClick={() => { setPedidoConfirmado({numero: Math.floor(100000 + Math.random() * 900000), data: new Date().toLocaleDateString('pt-BR'), nome: checkout.nome, email: checkout.email}); setPasso(5); }} className="w-full btn-primary py-4 text-lg">Confirmar Pagamento</button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            // PASSO 5: CONFIRMAÇÃO
+            if (passo === 5) {
+                return (
+                    <div className="gradient-brasil min-h-screen flex items-center justify-center px-4 py-8">
+                        <div className="max-w-2xl w-full card-premium p-12 text-center animate-scale">
+                            <div className="text-7xl mb-6">✅</div>
+                            <h1 className="text-5xl font-black text-green-700 mb-2">Pedido Confirmado!</h1>
+                            <p className="text-2xl font-light text-gray-600 mb-8">Obrigado! Você é um verdadeiro torcedor.</p>
+                            <div className="bg-green-50 border-2 border-green-600 rounded-lg p-8 mb-8">
+                                <p className="text-gray-600 mb-2">Pedido #</p>
+                                <p className="text-5xl font-mono font-bold text-green-700">{pedidoConfirmado?.numero}</p>
+                            </div>
+                            <div className="text-left space-y-3 mb-8 pb-8 border-b-2">
+                                <div className="flex justify-between font-bold"><span>Nome:</span><span>{pedidoConfirmado?.nome}</span></div>
+                                <div className="flex justify-between font-bold"><span>Email:</span><span className="text-blue-600">{pedidoConfirmado?.email}</span></div>
+                                <div className="flex justify-between font-bold"><span>Total:</span><span className="price-tag">R$ {total.toFixed(2)}</span></div>
+                            </div>
+                            <button onClick={() => { setCarrinho([]); setSelecionado(null); setPasso(0); }} className="w-full btn-primary py-4 text-lg mb-4">🏠 Voltar à Página Inicial</button>
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<BrasilCamisasApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>

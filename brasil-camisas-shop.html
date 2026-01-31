@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brasil Camisas - Loja Oficial da Seleção</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            scroll-behavior: smooth;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .animate-in {
+            animation: slideIn 0.6s ease-out forwards;
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .animate-pulse-custom {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #ffd700 0%, #228b22 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .star {
+            color: #ffd700;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #228b22 0%, #1a6b1a 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(34, 139, 34, 0.4);
+        }
+
+        .fade-in-stagger {
+            opacity: 0;
+            animation: slideIn 0.6s ease-out forwards;
+        }
+
+        .fade-in-stagger:nth-child(1) { animation-delay: 0s; }
+        .fade-in-stagger:nth-child(2) { animation-delay: 0.1s; }
+        .fade-in-stagger:nth-child(3) { animation-delay: 0.2s; }
+        .fade-in-stagger:nth-child(4) { animation-delay: 0.3s; }
+
+        .pix-qr {
+            animation: slideIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Produtos
+        const PRODUTOS = [
+            {
+                id: 1,
+                nome: 'Camisa Home',
+                modelo: 'home',
+                preco: 149.90,
+                imagem: '🟨',
+                descricao: 'Amarela e verde - A mais icônica',
+                specs: ['100% Poliéster Premium', 'Tecnologia Moisture-Wicking', 'Respirável', 'Impressão duradera']
+            },
+            {
+                id: 2,
+                nome: 'Camisa Away',
+                modelo: 'away',
+                preco: 149.90,
+                imagem: '🤍',
+                descricao: 'Branca - Elegante e sofisticada',
+                specs: ['100% Poliéster Premium', 'Tecnologia Moisture-Wicking', 'Respirável', 'Impressão duradera']
+            },
+            {
+                id: 3,
+                nome: 'Camisa Goleiro',
+                modelo: 'goleiro',
+                preco: 159.90,
+                imagem: '💚',
+                descricao: 'Verde - Especial para goleiros',
+                specs: ['100% Poliéster Premium', 'Tecnologia Moisture-Wicking', 'Respirável', 'Impressão duradera']
+            }
+        ];
+
+        const TAMANHOS = ['P', 'M', 'G', 'GG'];
+
+        function BrasilCamisasShop() {
+            const [passo, setPasso] = useState(0);
+            const [carrinho, setCarrinho] = useState([]);
+            const [selecionado, setSelecionado] = useState(null);
+            const [tamanho, setTamanho] = useState('M');
+            const [quantidade, setQuantidade] = useState(1);
+            const [checkout, setCheckout] = useState({
+                nome: '',
+                email: '',
+                endereco: '',
+                cidade: '',
+                cep: ''
+            });
+            const [metodoPagamento, setMetodoPagamento] = useState('');
+            const [pixData, setPixData] = useState(null);
+            const [pedidoConfirmado, setPedidoConfirmado] = useState(null);
+
+            const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+
+            // Passo 0: Landing Page
+            if (passo === 0) {
+                return (
+                    <div className="bg-white">
+                        {/* Header */}
+                        <header className="sticky top-0 bg-white shadow-md z-50">
+                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                                <div className="text-2xl font-bold">
+                                    <span className="text-yellow-500">🇧🇷</span> Brasil Camisas
+                                </div>
+                                <button
+                                    onClick={() => setPasso(2)}
+                                    className="relative"
+                                >
+                                    <span className="text-2xl">🛒</span>
+                                    {carrinho.length > 0 && (
+                                        <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+                                            {carrinho.length}
+                                        </span>
+                                    )}
+                                </button>
+                            </div>
+                        </header>
+
+                        {/* Hero */}
+                        <section className="hero-gradient text-white py-16 px-4">
+                            <div className="max-w-7xl mx-auto text-center animate-in">
+                                <h1 className="text-5xl font-bold mb-4">A Seleção No Seu Peito</h1>
+                                <p className="text-xl mb-8 opacity-95">Camisas oficiais da Seleção Brasileira com qualidade de campeonato</p>
+                                <button
+                                    onClick={() => setPasso(1)}
+                                    className="btn-primary text-white px-8 py-3 rounded-lg text-lg font-bold"
+                                >
+                                    🛍️ COMPRAR AGORA
+                                </button>
+                            </div>
+                        </section>
+
+                        {/* Características */}
+                        <section className="py-16 px-4 bg-gray-50">
+                            <div className="max-w-7xl mx-auto">
+                                <h2 className="text-3xl font-bold text-center mb-12">Por Que Escolher Nossa Camisa?</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    {[
+                                        { icon: '✨', titulo: 'Premium', desc: '100% Poliéster de qualidade' },
+                                        { icon: '💨', titulo: 'Respirável', desc: 'Tecnologia Moisture-Wicking' },
+                                        { icon: '🏆', titulo: 'Durável', desc: 'Impressão anti-desbotamento' },
+                                        { icon: '🌍', titulo: 'Oficial', desc: 'Certificado internacionalmente' }
+                                    ].map((item, i) => (
+                                        <div key={i} className="card-hover bg-white p-6 rounded-lg shadow-sm text-center">
+                                            <div className="text-4xl mb-3">{item.icon}</div>
+                                            <h3 className="font-bold text-lg mb-2">{item.titulo}</h3>
+                                            <p className="text-gray-600 text-sm">{item.desc}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Modelos */}
+                        <section className="py-16 px-4">
+                            <div className="max-w-7xl mx-auto">
+                                <h2 className="text-3xl font-bold text-center mb-12">🏆 Modelos Disponíveis</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    {PRODUTOS.map((prod, i) => (
+                                        <div key={prod.id} className="fade-in-stagger card-hover bg-white rounded-lg shadow-lg overflow-hidden">
+                                            <div className="bg-gradient-to-b from-gray-100 to-gray-50 p-12 text-center text-7xl">
+                                                {prod.imagem}
+                                            </div>
+                                            <div className="p-6">
+                                                <h3 className="text-xl font-bold mb-2">{prod.nome}</h3>
+                                                <p className="text-gray-600 mb-4">{prod.descricao}</p>
+                                                <div className="flex justify-between items-center mb-4">
+                                                    <span className="text-2xl font-bold text-green-600">R$ {prod.preco.toFixed(2)}</span>
+                                                    <span className="text-sm text-gray-500">Tamanhos: P-GG</span>
+                                                </div>
+                                                <button
+                                                    onClick={() => {
+                                                        setSelecionado(prod);
+                                                        setPasso(1);
+                                                    }}
+                                                    className="w-full btn-primary text-white py-2 rounded-lg font-bold"
+                                                >
+                                                    Ver Detalhes
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Depoimentos */}
+                        <section className="py-16 px-4 bg-gray-50">
+                            <div className="max-w-7xl mx-auto">
+                                <h2 className="text-3xl font-bold text-center mb-12">⭐ O Que Nossos Clientes Dizem</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    {[
+                                        { nome: 'João Santos', texto: 'Ficou perfeita! Muito confortável e a qualidade é excelente!' },
+                                        { nome: 'Maria Silva', texto: 'Entrega rápida e produto de ótima qualidade. Voltaria a comprar!' },
+                                        { nome: 'Carlos Oliveira', texto: 'Vale cada real investido. Melhor compra que já fiz!' }
+                                    ].map((dep, i) => (
+                                        <div key={i} className="bg-white p-6 rounded-lg shadow-sm">
+                                            <div className="flex gap-1 mb-3">
+                                                {[...Array(5)].map((_, j) => (
+                                                    <span key={j} className="star">⭐</span>
+                                                ))}
+                                            </div>
+                                            <p className="text-gray-700 mb-4">"{dep.texto}"</p>
+                                            <p className="font-bold text-green-600">- {dep.nome}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* FAQ */}
+                        <section className="py-16 px-4">
+                            <div className="max-w-7xl mx-auto">
+                                <h2 className="text-3xl font-bold text-center mb-12">❓ Perguntas Frequentes</h2>
+                                <div className="space-y-4">
+                                    {[
+                                        { q: 'Qual tamanho devo escolher?', a: 'Consulte nossa tabela de tamanhos. Recomendamos medir uma camisa que você já tem.' },
+                                        { q: 'Quanto tempo leva pra chegar?', a: 'Entrega em 3-5 dias úteis via transportadora.' },
+                                        { q: 'Posso parcelar?', a: 'Sim! Parcelamos em até 12x sem juros no cartão.' },
+                                        { q: 'Qual é a política de troca?', a: 'Garantia de troca em 30 dias se tiver defeito de fabricação.' }
+                                    ].map((faq, i) => (
+                                        <div key={i} className="bg-gray-50 p-4 rounded-lg">
+                                            <p className="font-bold text-gray-800 mb-2">{faq.q}</p>
+                                            <p className="text-gray-600 text-sm">{faq.a}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Benefícios */}
+                        <section className="py-16 px-4 bg-green-50 border-t-4 border-green-600">
+                            <div className="max-w-7xl mx-auto">
+                                <h2 className="text-3xl font-bold text-center mb-12">✨ Benefícios Exclusivos</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-center">
+                                    {[
+                                        { icon: '💳', text: 'Parcelado em 12x' },
+                                        { icon: '⚡', text: 'Entrega em 3-5 dias' },
+                                        { icon: '📦', text: 'Frete grátis acima de R$200' },
+                                        { icon: '🔄', text: 'Garantia de troca' },
+                                        { icon: '💯', text: 'Satisfação garantida' }
+                                    ].map((ben, i) => (
+                                        <div key={i}>
+                                            <div className="text-4xl mb-2">{ben.icon}</div>
+                                            <p className="font-bold text-gray-700">{ben.text}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* CTA Final */}
+                        <section className="py-12 px-4 hero-gradient text-white text-center">
+                            <h2 className="text-3xl font-bold mb-6">Pronto para Vista o Brasil?</h2>
+                            <button
+                                onClick={() => setPasso(1)}
+                                className="bg-white text-green-700 px-8 py-3 rounded-lg text-lg font-bold hover:bg-gray-100"
+                            >
+                                🛍️ COMEÇAR COMPRA
+                            </button>
+                        </section>
+
+                        {/* Footer */}
+                        <footer className="bg-gray-900 text-white py-8 px-4 text-center text-sm">
+                            <p>© 2024 Brasil Camisas - Todos os direitos reservados</p>
+                            <p className="mt-2">Política de Privacidade | Termos de Uso</p>
+                        </footer>
+                    </div>
+                );
+            }
+
+            // Passo 1: Seleção
+            if (passo === 1) {
+                const produto = selecionado || PRODUTOS[0];
+
+                return (
+                    <div className="min-h-screen bg-gray-50">
+                        <header className="sticky top-0 bg-white shadow-md z-50">
+                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                                <button
+                                    onClick={() => {
+                                        setPasso(0);
+                                        setSelecionado(null);
+                                    }}
+                                    className="text-2xl hover:opacity-70"
+                                >
+                                    ← Voltar
+                                </button>
+                                <h1 className="text-2xl font-bold text-green-600">Passo 1 de 5: Selecione</h1>
+                                <div></div>
+                            </div>
+                        </header>
+
+                        <div className="max-w-6xl mx-auto px-4 py-8">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white p-8 rounded-lg shadow-lg">
+                                {/* Imagem */}
+                                <div className="flex items-center justify-center">
+                                    <div className="text-9xl animate-bounce">{produto.imagem}</div>
+                                </div>
+
+                                {/* Detalhes */}
+                                <div>
+                                    <h2 className="text-4xl font-bold mb-4">{produto.nome}</h2>
+                                    <p className="text-xl text-gray-600 mb-6">{produto.descricao}</p>
+
+                                    {/* Specs */}
+                                    <div className="mb-6">
+                                        <h3 className="font-bold mb-3">Características:</h3>
+                                        <ul className="space-y-2">
+                                            {produto.specs.map((spec, i) => (
+                                                <li key={i} className="flex items-center gap-2">
+                                                    <span className="text-green-600">✓</span>
+                                                    <span>{spec}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    {/* Tamanho */}
+                                    <div className="mb-6">
+                                        <label className="block font-bold mb-3">Tamanho:</label>
+                                        <div className="flex gap-3">
+                                            {TAMANHOS.map(t => (
+                                                <button
+                                                    key={t}
+                                                    onClick={() => setTamanho(t)}
+                                                    className={`w-12 h-12 rounded-lg font-bold text-lg transition ${
+                                                        tamanho === t
+                                                            ? 'bg-green-600 text-white'
+                                                            : 'bg-gray-200 hover:bg-gray-300'
+                                                    }`}
+                                                >
+                                                    {t}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Quantidade */}
+                                    <div className="mb-6">
+                                        <label className="block font-bold mb-3">Quantidade:</label>
+                                        <div className="flex items-center gap-4">
+                                            <button
+                                                onClick={() => setQuantidade(Math.max(1, quantidade - 1))}
+                                                className="bg-gray-200 hover:bg-gray-300 w-10 h-10 rounded-lg font-bold text-xl"
+                                            >
+                                                −
+                                            </button>
+                                            <span className="text-2xl font-bold w-8 text-center">{quantidade}</span>
+                                            <button
+                                                onClick={() => setQuantidade(quantidade + 1)}
+                                                className="bg-gray-200 hover:bg-gray-300 w-10 h-10 rounded-lg font-bold text-xl"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Preço */}
+                                    <div className="mb-8 p-4 bg-yellow-50 rounded-lg">
+                                        <p className="text-gray-600">Preço unitário</p>
+                                        <p className="text-4xl font-bold text-green-600">R$ {produto.preco.toFixed(2)}</p>
+                                        <p className="text-gray-600 mt-2">Total: <span className="text-2xl font-bold text-green-600">R$ {(produto.preco * quantidade).toFixed(2)}</span></p>
+                                    </div>
+
+                                    {/* Botões */}
+                                    <button
+                                        onClick={() => {
+                                            setCarrinho([...carrinho, { ...produto, quantidade, tamanho, id: Date.now() }]);
+                                            setQuantidade(1);
+                                            alert('✓ Adicionado ao carrinho!');
+                                        }}
+                                        className="w-full btn-primary text-white py-4 rounded-lg text-xl font-bold mb-3"
+                                    >
+                                        🛒 Adicionar ao Carrinho
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Outros produtos */}
+                            <div className="mt-12">
+                                <h3 className="text-2xl font-bold mb-6">Veja Também:</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    {PRODUTOS.filter(p => p.id !== produto.id).map(prod => (
+                                        <button
+                                            key={prod.id}
+                                            onClick={() => setSelecionado(prod)}
+                                            className="card-hover bg-white p-6 rounded-lg shadow-sm text-center hover:shadow-md"
+                                        >
+                                            <div className="text-6xl mb-3">{prod.imagem}</div>
+                                            <h4 className="font-bold mb-2">{prod.nome}</h4>
+                                            <p className="text-green-600 font-bold">R$ {prod.preco.toFixed(2)}</p>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Passo 2: Carrinho
+            if (passo === 2) {
+                return (
+                    <div className="min-h-screen bg-gray-50">
+                        <header className="sticky top-0 bg-white shadow-md z-50">
+                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                                <button
+                                    onClick={() => setPasso(1)}
+                                    className="text-2xl hover:opacity-70"
+                                >
+                                    ← Voltar
+                                </button>
+                                <h1 className="text-2xl font-bold text-green-600">Passo 2 de 5: Carrinho</h1>
+                                <div></div>
+                            </div>
+                        </header>
+
+                        <div className="max-w-4xl mx-auto px-4 py-8">
+                            {carrinho.length === 0 ? (
+                                <div className="bg-white p-12 rounded-lg shadow-lg text-center">
+                                    <p className="text-4xl mb-4">🛒</p>
+                                    <p className="text-2xl font-bold text-gray-600 mb-6">Seu carrinho está vazio</p>
+                                    <button
+                                        onClick={() => setPasso(1)}
+                                        className="btn-primary text-white px-8 py-3 rounded-lg font-bold"
+                                    >
+                                        Continuar Comprando
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="space-y-4 mb-8">
+                                        {carrinho.map((item, i) => (
+                                            <div key={item.id} className="bg-white p-6 rounded-lg shadow-sm flex items-center justify-between">
+                                                <div className="flex items-center gap-6 flex-1">
+                                                    <div className="text-5xl">{item.imagem}</div>
+                                                    <div className="flex-1">
+                                                        <h3 className="font-bold text-lg">{item.nome}</h3>
+                                                        <p className="text-gray-600">Tamanho: {item.tamanho} | Qtd: {item.quantidade}</p>
+                                                        <p className="text-green-600 font-bold mt-2">R$ {(item.preco * item.quantidade).toFixed(2)}</p>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={() => setCarrinho(carrinho.filter((_, idx) => idx !== i))}
+                                                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold"
+                                                >
+                                                    ✕ Remover
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="bg-white p-8 rounded-lg shadow-lg mb-6">
+                                        <div className="flex justify-between items-center mb-4 pb-4 border-b-2">
+                                            <span className="text-xl font-bold">Subtotal:</span>
+                                            <span className="text-xl">R$ {total.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center mb-4 pb-4 border-b-2">
+                                            <span className="text-xl font-bold">Frete:</span>
+                                            <span className="text-xl text-green-600 font-bold">Grátis!</span>
+                                        </div>
+                                        <div className="flex justify-between items-center text-2xl font-bold">
+                                            <span>Total:</span>
+                                            <span className="text-green-600">R$ {total.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-4">
+                                        <button
+                                            onClick={() => setPasso(1)}
+                                            className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-bold text-lg"
+                                        >
+                                            ← Continuar Comprando
+                                        </button>
+                                        <button
+                                            onClick={() => setPasso(3)}
+                                            className="flex-1 btn-primary text-white py-3 rounded-lg font-bold text-lg"
+                                        >
+                                            Ir para Checkout →
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            // Passo 3: Checkout
+            if (passo === 3) {
+                return (
+                    <div className="min-h-screen bg-gray-50">
+                        <header className="sticky top-0 bg-white shadow-md z-50">
+                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                                <button
+                                    onClick={() => setPasso(2)}
+                                    className="text-2xl hover:opacity-70"
+                                >
+                                    ← Voltar
+                                </button>
+                                <h1 className="text-2xl font-bold text-green-600">Passo 3 de 5: Checkout</h1>
+                                <div></div>
+                            </div>
+                        </header>
+
+                        <div className="max-w-4xl mx-auto px-4 py-8">
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                {/* Formulário */}
+                                <div className="lg:col-span-2">
+                                    <div className="bg-white p-8 rounded-lg shadow-lg">
+                                        <h2 className="text-2xl font-bold mb-6">Dados de Entrega</h2>
+
+                                        <div className="space-y-4 mb-6">
+                                            <input
+                                                type="text"
+                                                placeholder="Seu Nome"
+                                                value={checkout.nome}
+                                                onChange={(e) => setCheckout({...checkout, nome: e.target.value})}
+                                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+                                            />
+                                            <input
+                                                type="email"
+                                                placeholder="Seu Email"
+                                                value={checkout.email}
+                                                onChange={(e) => setCheckout({...checkout, email: e.target.value})}
+                                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+                                            />
+                                            <input
+                                                type="text"
+                                                placeholder="Endereço Completo"
+                                                value={checkout.endereco}
+                                                onChange={(e) => setCheckout({...checkout, endereco: e.target.value})}
+                                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+                                            />
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Cidade"
+                                                    value={checkout.cidade}
+                                                    onChange={(e) => setCheckout({...checkout, cidade: e.target.value})}
+                                                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    placeholder="CEP"
+                                                    value={checkout.cep}
+                                                    onChange={(e) => setCheckout({...checkout, cep: e.target.value})}
+                                                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <h2 className="text-2xl font-bold mb-6 mt-8">Método de Pagamento</h2>
+
+                                        <div className="space-y-3">
+                                            {[
+                                                { id: 'pix', icon: '✨', nome: 'PIX', desc: 'Mais rápido e barato' },
+                                                { id: 'cartao', icon: '💳', nome: 'Cartão de Crédito', desc: 'Parcelado em até 12x' },
+                                                { id: 'boleto', icon: '📋', nome: 'Boleto', desc: 'Vence em 3 dias' }
+                                            ].map(metodo => (
+                                                <button
+                                                    key={metodo.id}
+                                                    onClick={() => setMetodoPagamento(metodo.id)}
+                                                    className={`w-full p-4 rounded-lg border-2 transition text-left ${
+                                                        metodoPagamento === metodo.id
+                                                            ? 'border-green-600 bg-green-50'
+                                                            : 'border-gray-300 hover:border-gray-400'
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="flex items-center gap-3">
+                                                            <span className="text-2xl">{metodo.icon}</span>
+                                                            <div>
+                                                                <p className="font-bold">{metodo.nome}</p>
+                                                                <p className="text-sm text-gray-600">{metodo.desc}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className={`w-6 h-6 rounded-full border-2 ${
+                                                            metodoPagamento === metodo.id
+                                                                ? 'bg-green-600 border-green-600'
+                                                                : 'border-gray-300'
+                                                        }`}></div>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+
+                                        <button
+                                            onClick={() => {
+                                                if (!checkout.nome || !checkout.email || !checkout.endereco || !metodoPagamento) {
+                                                    alert('Por favor, preencha todos os campos');
+                                                    return;
+                                                }
+                                                setPasso(4);
+                                            }}
+                                            className="w-full btn-primary text-white py-3 rounded-lg font-bold text-lg mt-8"
+                                        >
+                                            Continuar para Pagamento →
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Resumo */}
+                                <div className="bg-white p-6 rounded-lg shadow-lg h-fit sticky top-24">
+                                    <h3 className="font-bold text-lg mb-4">Resumo do Pedido</h3>
+                                    <div className="space-y-3 mb-6 pb-6 border-b">
+                                        {carrinho.map((item) => (
+                                            <div key={item.id} className="flex justify-between text-sm">
+                                                <span>{item.nome} (Tam. {item.tamanho}) x{item.quantidade}</span>
+                                                <span className="font-bold">R$ {(item.preco * item.quantidade).toFixed(2)}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between">
+                                            <span>Subtotal:</span>
+                                            <span>R$ {total.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between text-green-600 font-bold">
+                                            <span>Frete:</span>
+                                            <span>Grátis</span>
+                                        </div>
+                                        <div className="flex justify-between text-lg font-bold pt-4 border-t text-green-600">
+                                            <span>Total:</span>
+                                            <span>R$ {total.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Passo 4: Pagamento
+            if (passo === 4) {
+                return (
+                    <div className="min-h-screen bg-gray-50">
+                        <header className="sticky top-0 bg-white shadow-md z-50">
+                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                                <button
+                                    onClick={() => setPasso(3)}
+                                    className="text-2xl hover:opacity-70"
+                                >
+                                    ← Voltar
+                                </button>
+                                <h1 className="text-2xl font-bold text-green-600">Passo 4 de 5: Pagamento</h1>
+                                <div></div>
+                            </div>
+                        </header>
+
+                        <div className="max-w-2xl mx-auto px-4 py-8">
+                            {metodoPagamento === 'pix' ? (
+                                <div className="bg-white p-12 rounded-lg shadow-lg text-center pix-qr">
+                                    <h2 className="text-3xl font-bold mb-6">✨ Código PIX</h2>
+                                    <p className="text-gray-600 mb-8">Escaneie o QR Code abaixo com seu app bancário</p>
+
+                                    {/* QR Code Simulado */}
+                                    <div className="bg-gray-100 p-8 rounded-lg mb-8 inline-block">
+                                        <div className="text-8xl animate-pulse-custom">█ ▀ █</div>
+                                        <div className="text-8xl animate-pulse-custom">▀ █ ▀</div>
+                                        <div className="text-8xl animate-pulse-custom">█ ▀ █</div>
+                                    </div>
+
+                                    <div className="mb-8">
+                                        <p className="text-gray-600 mb-2">Ou copie o código:</p>
+                                        <div className="bg-gray-100 p-4 rounded-lg break-all text-sm font-mono mb-4">
+                                            00020126360014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-42661417400052040000530398654061{total.toFixed(2)}5802BR5913BRASIL SHOP6009SAO PAULO62410503***63041234
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                navigator.clipboard.writeText('00020126360014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-42661417400052040000530398654061');
+                                                alert('✓ Código copiado!');
+                                            }}
+                                            className="btn-primary text-white px-6 py-2 rounded-lg font-bold"
+                                        >
+                                            📋 Copiar
+                                        </button>
+                                    </div>
+
+                                    <div className="bg-yellow-50 border-2 border-yellow-500 p-4 rounded-lg mb-8">
+                                        <p className="font-bold text-yellow-900 mb-2">⏰ Válido por 10 minutos</p>
+                                        <p className="text-yellow-800 text-sm">Após confirmar o pagamento, você verá a confirmação automaticamente</p>
+                                    </div>
+
+                                    <button
+                                        onClick={() => {
+                                            setPedidoConfirmado({
+                                                numero: Math.floor(100000 + Math.random() * 900000),
+                                                data: new Date().toLocaleDateString('pt-BR'),
+                                                nome: checkout.nome,
+                                                email: checkout.email
+                                            });
+                                            setPasso(5);
+                                        }}
+                                        className="w-full btn-primary text-white py-3 rounded-lg font-bold text-lg"
+                                    >
+                                        ✓ Confirmar Pagamento
+                                    </button>
+
+                                    <button
+                                        onClick={() => setPasso(3)}
+                                        className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-bold mt-4"
+                                    >
+                                        ← Voltar ao Checkout
+                                    </button>
+                                </div>
+                            ) : metodoPagamento === 'cartao' ? (
+                                <div className="bg-white p-8 rounded-lg shadow-lg">
+                                    <h2 className="text-2xl font-bold mb-6">Dados do Cartão</h2>
+                                    <div className="space-y-4 mb-8">
+                                        <input
+                                            type="text"
+                                            placeholder="Número do Cartão (16 dígitos)"
+                                            maxLength="19"
+                                            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+                                        />
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <input
+                                                type="text"
+                                                placeholder="MM/AA"
+                                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+                                            />
+                                            <input
+                                                type="text"
+                                                placeholder="CVV"
+                                                maxLength="3"
+                                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+                                            />
+                                        </div>
+                                        <input
+                                            type="text"
+                                            placeholder="Nome no Cartão"
+                                            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+                                        />
+                                    </div>
+
+                                    <div className="mb-8 p-4 bg-blue-50 rounded-lg">
+                                        <p className="font-bold text-blue-900 mb-2">Parcelamento:</p>
+                                        <select className="w-full p-2 border rounded-lg">
+                                            {[...Array(12)].map((_, i) => {
+                                                const parcelas = i + 1;
+                                                const valor = total / parcelas;
+                                                return (
+                                                    <option key={i}>
+                                                        {parcelas}x de R$ {valor.toFixed(2)}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    </div>
+
+                                    <button
+                                        onClick={() => {
+                                            setPedidoConfirmado({
+                                                numero: Math.floor(100000 + Math.random() * 900000),
+                                                data: new Date().toLocaleDateString('pt-BR'),
+                                                nome: checkout.nome,
+                                                email: checkout.email
+                                            });
+                                            setPasso(5);
+                                        }}
+                                        className="w-full btn-primary text-white py-3 rounded-lg font-bold text-lg mb-4"
+                                    >
+                                        💳 Confirmar Pagamento
+                                    </button>
+
+                                    <button
+                                        onClick={() => setPasso(3)}
+                                        className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-bold"
+                                    >
+                                        ← Voltar ao Checkout
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+                                    <h2 className="text-2xl font-bold mb-4">📋 Boleto Bancário</h2>
+                                    <p className="text-gray-600 mb-6">Seu boleto será enviado por email</p>
+                                    <button
+                                        onClick={() => {
+                                            setPedidoConfirmado({
+                                                numero: Math.floor(100000 + Math.random() * 900000),
+                                                data: new Date().toLocaleDateString('pt-BR'),
+                                                nome: checkout.nome,
+                                                email: checkout.email
+                                            });
+                                            setPasso(5);
+                                        }}
+                                        className="w-full btn-primary text-white py-3 rounded-lg font-bold text-lg mb-4"
+                                    >
+                                        ✓ Gerar Boleto
+                                    </button>
+                                    <button
+                                        onClick={() => setPasso(3)}
+                                        className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-bold"
+                                    >
+                                        ← Voltar ao Checkout
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            // Passo 5: Confirmação
+            if (passo === 5) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center px-4 py-8">
+                        <div className="max-w-2xl w-full">
+                            <div className="bg-white rounded-lg shadow-2xl p-12 text-center animate-in">
+                                <div className="text-7xl mb-6 animate-bounce">✅</div>
+
+                                <h1 className="text-4xl font-bold text-green-600 mb-2">Pedido Confirmado!</h1>
+                                <p className="text-xl text-gray-600 mb-8">Obrigado por sua compra!</p>
+
+                                <div className="bg-green-50 border-2 border-green-600 rounded-lg p-8 mb-8">
+                                    <p className="text-gray-600 mb-2">Número do Pedido</p>
+                                    <p className="text-4xl font-bold text-green-600 font-mono"># {pedidoConfirmado?.numero}</p>
+                                </div>
+
+                                <div className="space-y-4 mb-8 text-left">
+                                    <div className="flex justify-between py-3 border-b">
+                                        <span className="text-gray-600">Nome:</span>
+                                        <span className="font-bold">{pedidoConfirmado?.nome}</span>
+                                    </div>
+                                    <div className="flex justify-between py-3 border-b">
+                                        <span className="text-gray-600">Email:</span>
+                                        <span className="font-bold text-blue-600">{pedidoConfirmado?.email}</span>
+                                    </div>
+                                    <div className="flex justify-between py-3 border-b">
+                                        <span className="text-gray-600">Data:</span>
+                                        <span className="font-bold">{pedidoConfirmado?.data}</span>
+                                    </div>
+                                    <div className="flex justify-between py-3 border-b">
+                                        <span className="text-gray-600">Total:</span>
+                                        <span className="font-bold text-green-600 text-xl">R$ {total.toFixed(2)}</span>
+                                    </div>
+                                </div>
+
+                                <div className="bg-blue-50 border-l-4 border-blue-600 p-6 mb-8 text-left">
+                                    <p className="font-bold text-blue-900 mb-2">📧 Confirmação Enviada</p>
+                                    <p className="text-blue-800 text-sm">Um email de confirmação foi enviado para <strong>{pedidoConfirmado?.email}</strong></p>
+                                </div>
+
+                                <div className="bg-yellow-50 border-l-4 border-yellow-600 p-6 mb-8 text-left">
+                                    <p className="font-bold text-yellow-900 mb-2">📦 Entrega Estimada</p>
+                                    <p className="text-yellow-800 text-sm">Seu pedido será entregue em <strong>3-5 dias úteis</strong></p>
+                                </div>
+
+                                <button
+                                    onClick={() => {
+                                        setCarrinho([]);
+                                        setSelecionado(null);
+                                        setTamanho('M');
+                                        setQuantidade(1);
+                                        setCheckout({nome: '', email: '', endereco: '', cidade: '', cep: ''});
+                                        setMetodoPagamento('');
+                                        setPasso(0);
+                                    }}
+                                    className="w-full btn-primary text-white py-4 rounded-lg font-bold text-lg mb-4"
+                                >
+                                    🏠 Voltar à Página Inicial
+                                </button>
+
+                                <button
+                                    onClick={() => {
+                                        setSelecionado(null);
+                                        setPasso(1);
+                                    }}
+                                    className="w-full bg-gray-600 hover:bg-gray-700 text-white py-4 rounded-lg font-bold text-lg"
+                                >
+                                    🛍️ Continuar Comprando
+                                </button>
+                            </div>
+
+                            <div className="text-center mt-8 text-gray-600">
+                                <p>© 2024 Brasil Camisas - Loja Oficial da Seleção</p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        // Renderizar aplicação
+        ReactDOM.render(
+            <BrasilCamisasShop />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>
