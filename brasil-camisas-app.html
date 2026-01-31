@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brasil Camisas - Seleção Oficial 🇧🇷</title>
+    <title>Brasil Fan Store - Seleção Oficial 🇧🇷</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -11,13 +11,14 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         * { margin: 0; padding: 0; }
-        body { font-family: 'Poppins', sans-serif; background: #0f0f0f; overflow-x: hidden; }
+        body { font-family: 'Poppins', sans-serif; background: #f8f9fa; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: -1px; }
 
         .gradient-brasil {
-            background: linear-gradient(135deg, #ffd700 0%, #228b22 50%, #0047ab 100%);
+            background: linear-gradient(135deg, #ffd700 0%, #228b22 55%, #0047ab 100%);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 10px 30px rgba(34, 139, 34, 0.2);
         }
 
         .gradient-brasil::before {
@@ -27,7 +28,7 @@
             right: -50%;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
             background-size: 20px 20px;
             animation: float 8s ease-in-out infinite;
             pointer-events: none;
@@ -35,11 +36,11 @@
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(1deg); }
+            50% { transform: translateY(-12px) rotate(1deg); }
         }
 
         @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -53,22 +54,28 @@
             50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
         }
 
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
         .animate-in { animation: slideUpFade 0.8s ease-out; }
         .animate-scale { animation: scaleIn 0.6s ease-out; }
 
         .card-premium {
             background: white;
             border-radius: 20px;
-            padding: 24px;
+            padding: 28px;
             position: relative;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 2px solid transparent;
+            border: 2px solid #f0f0f0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
         }
 
         .card-premium:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            transform: translateY(-16px);
+            box-shadow: 0 20px 50px rgba(34, 139, 34, 0.15);
             border-color: #ffd700;
         }
 
@@ -86,6 +93,7 @@
             overflow: hidden;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            box-shadow: 0 6px 20px rgba(34, 139, 34, 0.3);
         }
 
         .btn-primary::before {
@@ -95,13 +103,16 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             transition: left 0.4s ease;
             border-radius: 12px;
         }
 
         .btn-primary:hover::before { left: 100%; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(34, 139, 34, 0.4); }
+        .btn-primary:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(34, 139, 34, 0.4);
+        }
 
         .product-badge {
             position: absolute;
@@ -116,7 +127,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             transform: rotate(15deg);
-            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
         }
 
         .shimmer-text {
@@ -125,6 +136,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: shimmer 3s infinite;
         }
 
         .stagger {
@@ -137,11 +149,12 @@
         .stagger:nth-child(3) { animation-delay: 0.3s; }
 
         .accent-line {
-            height: 4px;
+            height: 6px;
             background: linear-gradient(90deg, #ffd700 0%, #228b22 50%, transparent 100%);
             width: 80px;
             margin: 16px 0;
-            border-radius: 2px;
+            border-radius: 3px;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
         }
 
         .price-tag {
@@ -166,12 +179,13 @@
 
         .step.active {
             background: linear-gradient(90deg, #ffd700 0%, #228b22 100%);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
         }
 
         .input-premium {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #e8e8e8;
             border-radius: 12px;
             font-family: 'Poppins', sans-serif;
             font-size: 16px;
@@ -182,7 +196,8 @@
         .input-premium:focus {
             outline: none;
             border-color: #228b22;
-            box-shadow: 0 0 0 3px rgba(34, 139, 34, 0.1);
+            box-shadow: 0 0 0 4px rgba(34, 139, 34, 0.1);
+            background: #f9fdf7;
         }
 
         .product-image {
@@ -190,13 +205,104 @@
             height: auto;
             border-radius: 16px;
             object-fit: cover;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes slideDrawerIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDrawerOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .drawer-slide {
+            animation: slideDrawerIn 0.4s ease-out forwards;
+        }
+
+        .drawer-close {
+            animation: slideDrawerOut 0.4s ease-out forwards;
+        }
+
+        .drawer-backdrop {
+            animation: slideUpFade 0.3s ease-out forwards;
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 32px; }
-            h2 { font-size: 24px; }
-            .card-premium { padding: 16px; }
+            h1 { font-size: 28px; }
+            h2 { font-size: 20px; }
+            h3 { font-size: 18px; }
+            h4 { font-size: 16px; }
+            p { font-size: 14px; }
+            
+            .card-premium { 
+                padding: 12px; 
+                border-radius: 12px;
+                margin-bottom: 8px;
+            }
+            
+            .card-premium:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            }
+            
+            .btn-primary {
+                padding: 12px 24px;
+                font-size: 14px;
+                min-height: 44px;
+            }
+            
+            .price-tag {
+                font-size: 22px;
+            }
+            
+            .accent-line {
+                width: 60px;
+            }
+            
+            .product-badge {
+                padding: 8px 12px;
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body { font-size: 13px; }
+            h1 { font-size: 24px; }
+            h2 { font-size: 18px; }
+            h3 { font-size: 16px; }
+            
+            .drawer-slide {
+                width: 100vw !important;
+            }
+            
+            .price-tag {
+                font-size: 20px;
+            }
+            
+            .hero-section {
+                min-height: 300px;
+            }
         }
     </style>
 </head>
@@ -256,24 +362,127 @@
             });
             const [metodoPagamento, setMetodoPagamento] = useState('');
             const [pedidoConfirmado, setPedidoConfirmado] = useState(null);
+            const [carrinhoAberto, setCarrinhoAberto] = useState(false);
 
             const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+
+            // Componente SideDrawer
+            const SideDrawer = () => (
+                <>
+                    {/* Backdrop */}
+                    {carrinhoAberto && (
+                        <div 
+                            className="fixed inset-0 bg-black bg-opacity-50 z-40 drawer-backdrop"
+                            onClick={() => setCarrinhoAberto(false)}
+                        ></div>
+                    )}
+
+                    {/* Drawer */}
+                    <div className={`fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 transform transition-all duration-300 ${carrinhoAberto ? 'drawer-slide' : 'translate-x-full'}`}>
+                        <div className="p-4 md:p-6 h-full flex flex-col">
+                            {/* Header */}
+                            <div className="flex justify-between items-center mb-4 md:mb-6 pb-3 md:pb-4 border-b-2">
+                                <h2 className="text-lg md:text-2xl font-bold text-green-600">🛒 Carrinho</h2>
+                                <button 
+                                    onClick={() => setCarrinhoAberto(false)}
+                                    className="text-xl md:text-2xl hover:opacity-70 transition"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+
+                            {/* Itens */}
+                            {carrinho.length === 0 ? (
+                                <div className="flex-1 flex items-center justify-center text-center">
+                                    <div>
+                                        <p className="text-3xl md:text-4xl mb-3 md:mb-4">🛒</p>
+                                        <p className="text-gray-600 font-bold text-sm md:text-base">Carrinho vazio</p>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex-1 overflow-y-auto mb-4 md:mb-6 space-y-3 md:space-y-4 pr-2">
+                                    {carrinho.map((item, idx) => (
+                                        <div key={item.id} className="bg-gray-50 p-3 md:p-4 rounded-lg border border-gray-200">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <div className="flex-1">
+                                                    <p className="font-bold text-sm md:text-lg">{item.nome}</p>
+                                                    <p className="text-xs md:text-sm text-gray-600">Tam. {item.tamanho} | Qtd: {item.quantidade}</p>
+                                                </div>
+                                                <button
+                                                    onClick={() => setCarrinho(carrinho.filter((_, i) => i !== idx))}
+                                                    className="text-red-500 hover:text-red-700 font-bold text-base md:text-lg ml-2"
+                                                >
+                                                    ✕
+                                                </button>
+                                            </div>
+                                            <p className="font-bold text-green-600 text-right text-sm md:text-base">R$ {(item.preco * item.quantidade).toFixed(2)}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {carrinho.length > 0 && (
+                                <>
+                                    {/* Total */}
+                                    <div className="mb-4 md:mb-6 pb-4 md:pb-6 border-t-2 border-b-2">
+                                        <div className="flex justify-between font-bold text-base md:text-xl mb-2">
+                                            <span>Subtotal:</span>
+                                            <span>R$ {total.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between text-xs md:text-sm text-green-600 font-bold mb-3 md:mb-4">
+                                            <span>Frete:</span>
+                                            <span>Grátis!</span>
+                                        </div>
+                                        <div className="flex justify-between text-lg md:text-2xl font-bold text-green-600">
+                                            <span>Total:</span>
+                                            <span>R$ {total.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Botões */}
+                                    <div className="space-y-2 md:space-y-3">
+                                        <button 
+                                            onClick={() => {
+                                                setCarrinhoAberto(false);
+                                                setPasso(1);
+                                            }}
+                                            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 md:py-3 rounded-lg font-bold transition text-xs md:text-base"
+                                        >
+                                            ← Continuar
+                                        </button>
+                                        <button 
+                                            onClick={() => {
+                                                setCarrinhoAberto(false);
+                                                setPasso(3);
+                                            }}
+                                            className="w-full btn-primary text-white py-2 md:py-3 rounded-lg font-bold text-xs md:text-lg"
+                                        >
+                                            Finalizar Compra →
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </>
+            );
 
             // PASSO 0: LANDING PAGE
             if (passo === 0) {
                 return (
-                    <div className="bg-white min-h-screen">
+                    <>
+                        <SideDrawer />
+                        <div className="bg-white min-h-screen">
                         {/* Header */}
-                        <header className="sticky top-0 z-50 bg-white shadow-lg backdrop-blur-md bg-opacity-95">
-                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-                                <div className="flex items-center gap-2 text-2xl font-bold">
-                                    <span className="text-3xl">🇧🇷</span>
-                                    <span className="shimmer-text text-2xl">BRASIL</span>
+                        <header className="sticky top-0 z-50 bg-white shadow-lg backdrop-blur-md bg-opacity-98 border-b-2 border-green-50">
+                            <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center">
+                                <div className="flex items-center gap-2 text-xl md:text-2xl font-bold">
+                                    <span className="shimmer-text text-xl md:text-2xl">Brasil Fan Store</span>
                                 </div>
                                 <button onClick={() => setPasso(2)} className="relative group">
-                                    <div className="text-3xl group-hover:scale-110 transition-transform">🛒</div>
+                                    <div className="text-2xl md:text-3xl group-hover:scale-125 transition-transform duration-300">🛒</div>
                                     {carrinho.length > 0 && (
-                                        <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                                        <span className="absolute -top-3 -right-3 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-full w-6 h-6 md:w-7 md:h-7 flex items-center justify-center text-xs font-bold shadow-lg">
                                             {carrinho.length}
                                         </span>
                                     )}
@@ -282,41 +491,50 @@
                         </header>
 
                         {/* HERO */}
-                        <section className="gradient-brasil h-96 flex items-center justify-center text-white relative">
-                            <div className="text-center z-10 animate-in">
-                                <h1 className="text-7xl font-black mb-6 drop-shadow-lg">SELEÇÃO</h1>
-                                <p className="text-2xl font-light mb-8 max-w-2xl drop-shadow-md">Veste o Brasil no peito. Cada camisa é uma história de paixão, tradição e glória.</p>
-                                <button onClick={() => setPasso(1)} className="btn-primary text-lg px-12 py-4">
+                        <section className="gradient-brasil py-16 md:h-96 flex items-center justify-center text-white relative hero-section">
+                            <div className="text-center z-10 animate-in px-4 space-y-4 md:space-y-6">
+                                <div className="space-y-2 md:space-y-4">
+                                    <p className="text-base md:text-xl font-light opacity-95 uppercase tracking-widest drop-shadow-md">Bem-vindo à</p>
+                                    <h1 className="text-5xl md:text-7xl font-black mb-0 drop-shadow-lg leading-tight">BRASIL FAN STORE</h1>
+                                    <div className="h-1 w-24 bg-white opacity-80 mx-auto rounded-full"></div>
+                                </div>
+                                <p className="text-base md:text-2xl font-light mb-6 md:mb-8 max-w-2xl mx-auto drop-shadow-md opacity-95">Veste o Brasil no peito. Cada camisa é uma história de paixão, tradição e glória.</p>
+                                <button onClick={() => setPasso(1)} className="btn-primary text-sm md:text-lg px-8 md:px-12 py-3 md:py-4 inline-block">
                                     ⚡ Explorar Coleção
                                 </button>
                             </div>
                         </section>
 
                         {/* PRODUTOS */}
-                        <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50">
+                        <section className="py-16 md:py-28 px-4 bg-white">
                             <div className="max-w-7xl mx-auto">
-                                <div className="mb-16">
-                                    <h2 className="text-5xl font-black mb-4">Coleção Oficial</h2>
+                                <div className="mb-12 md:mb-20 text-center md:text-left">
+                                    <p className="text-sm md:text-base text-green-600 font-bold uppercase tracking-widest mb-3">✨ Coleção Exclusiva</p>
+                                    <h2 className="text-4xl md:text-5xl font-black mb-4">Nossos Modelos</h2>
                                     <div className="accent-line"></div>
+                                    <p className="text-gray-600 text-base md:text-lg mt-6 max-w-2xl">Escolha a camisa perfeita para representar a Seleção com estilo, qualidade e autenticidade.</p>
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                                     {PRODUTOS.map((prod, i) => (
-                                        <div key={prod.id} className="stagger card-premium relative">
+                                        <div key={prod.id} className="stagger card-premium relative group">
                                             {prod.badge && <div className="product-badge">{prod.badge}</div>}
-                                            <img src={prod.imagem} alt={prod.nome} className="product-image mb-6" />
-                                            <h3 className="text-3xl font-black mb-1">{prod.nome}</h3>
-                                            <p className="text-gray-600 text-sm mb-2">{prod.subtitulo}</p>
-                                            <p className="text-gray-500 text-xs mb-6">{prod.descricao}</p>
-                                            <div className="text-center mb-8">
-                                                <div className="price-tag">R$ {prod.preco.toFixed(2)}</div>
-                                                <p className="text-xs text-gray-500 mt-2">Ou 12x de R$ {(prod.preco/12).toFixed(2)}</p>
+                                            <div className="mb-6 overflow-hidden rounded-12">
+                                                <img src={prod.imagem} alt={prod.nome} className="product-image mb-0" />
+                                            </div>
+                                            <h3 className="text-2xl md:text-3xl font-black mb-2">{prod.nome}</h3>
+                                            <p className="text-green-600 text-sm md:text-base font-bold mb-1 uppercase tracking-wide">{prod.subtitulo}</p>
+                                            <p className="text-gray-500 text-xs md:text-sm mb-6">{prod.descricao}</p>
+                                            <div className="text-center mb-8 bg-gradient-to-br from-yellow-50 to-green-50 p-4 rounded-lg">
+                                                <div className="text-sm text-gray-600 mb-1">A partir de</div>
+                                                <div className="price-tag text-2xl md:text-3xl">R$ {prod.preco.toFixed(2)}</div>
+                                                <p className="text-xs text-gray-500 mt-2">ou 12x de R$ {(prod.preco/12).toFixed(2)}</p>
                                             </div>
                                             <button
                                                 onClick={() => { setSelecionado(prod); setPasso(1); }}
-                                                className="w-full btn-primary"
+                                                className="w-full btn-primary text-xs md:text-base opacity-0 group-hover:opacity-100 transition-all duration-300"
                                             >
-                                                Ver Detalhes
+                                                Ver Detalhes →
                                             </button>
                                         </div>
                                     ))}
@@ -325,21 +543,24 @@
                         </section>
 
                         {/* FEATURES */}
-                        <section className="py-20 px-4 bg-white">
+                        <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-50 to-white">
                             <div className="max-w-7xl mx-auto">
-                                <h2 className="text-5xl font-black mb-4">Por Que Escolher</h2>
-                                <div className="accent-line mb-12"></div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div className="text-center md:text-left mb-12 md:mb-16">
+                                    <p className="text-sm md:text-base text-green-600 font-bold uppercase tracking-widest mb-3">💚 Qualidade</p>
+                                    <h2 className="text-4xl md:text-5xl font-black mb-4">Por Que Escolher</h2>
+                                    <div className="accent-line"></div>
+                                </div>
+                                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                                     {[
-                                        { icon: '⚡', titulo: 'Premium', desc: '100% Poliéster' },
-                                        { icon: '💨', titulo: 'Respirável', desc: 'Moisture-Wicking' },
+                                        { icon: '⚡', titulo: 'Premium', desc: '100% Poliéster de qualidade' },
+                                        { icon: '💨', titulo: 'Respirável', desc: 'Tecnologia Moisture-Wicking' },
                                         { icon: '🏆', titulo: 'Durável', desc: 'Anti-desbotamento' },
-                                        { icon: '🌍', titulo: 'Oficial', desc: 'Certificado' }
+                                        { icon: '🌍', titulo: 'Oficial', desc: 'Certificado internacionalmente' }
                                     ].map((feat, i) => (
-                                        <div key={i} className="stagger text-center p-8 rounded-16 hover:bg-gray-50">
-                                            <div className="text-6xl mb-4">{feat.icon}</div>
-                                            <h3 className="text-xl font-bold mb-2">{feat.titulo}</h3>
-                                            <p className="text-gray-600 text-sm">{feat.desc}</p>
+                                        <div key={i} className="stagger card-premium text-center hover:border-green-600 group">
+                                            <div className="text-5xl md:text-6xl mb-4 group-hover:scale-125 transition-transform duration-300">{feat.icon}</div>
+                                            <h3 className="text-lg md:text-xl font-bold mb-2 text-gray-900">{feat.titulo}</h3>
+                                            <p className="text-gray-600 text-xs md:text-sm leading-relaxed">{feat.desc}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -347,22 +568,85 @@
                         </section>
 
                         {/* CTA FINAL */}
-                        <section className="gradient-brasil py-20 text-white text-center">
-                            <div className="z-10 max-w-2xl mx-auto">
-                                <h2 className="text-5xl font-black mb-6">Pronto para a Glória?</h2>
-                                <p className="text-xl mb-8 font-light">Cada camisa é um compromisso com a seleção.</p>
-                                <button onClick={() => setPasso(1)} className="bg-white text-green-700 px-12 py-4 rounded-lg text-lg font-bold hover:bg-gray-100">
-                                    Começar Compra
+                        <section className="gradient-brasil py-16 md:py-24 text-white text-center px-4 relative overflow-hidden">
+                            <div className="absolute inset-0 opacity-5">
+                                <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+                                <div className="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+                            </div>
+                            <div className="z-10 max-w-2xl mx-auto relative">
+                                <p className="text-sm md:text-base uppercase tracking-widest mb-3 opacity-90">⚽ Momento de Decisão</p>
+                                <h2 className="text-4xl md:text-5xl font-black mb-4 md:mb-6 leading-tight">Pronto para a Glória?</h2>
+                                <p className="text-base md:text-xl mb-8 md:mb-10 font-light opacity-95 max-w-lg mx-auto">Cada camisa é um compromisso com a seleção. Viste o Brasil e seja parte da história.</p>
+                                <button onClick={() => setPasso(1)} className="bg-white text-green-700 px-8 md:px-12 py-3 md:py-4 rounded-lg text-base md:text-lg font-bold hover:bg-gray-50 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                                    🛍️ Começar Compra
                                 </button>
                             </div>
                         </section>
 
                         {/* Footer */}
-                        <footer className="bg-gray-900 text-gray-400 py-12 px-4 text-center">
-                            <p className="mb-4">© 2024 Brasil Camisas - Loja Oficial da Seleção</p>
-                            <p className="text-sm">Feito com 💚 para torcedores brasileiros</p>
+                        <footer className="bg-gradient-to-b from-gray-900 to-gray-950 text-gray-300 py-12 md:py-16 px-4 text-center md:text-left">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-12 pb-12 border-b border-gray-700">
+                                    {/* Sobre */}
+                                    <div>
+                                        <h4 className="text-white font-bold text-lg mb-4">Brasil Fan Store</h4>
+                                        <p className="text-sm text-gray-400 leading-relaxed">A loja oficial da Seleção Brasileira com camisas premium, autênticas e certificadas internacionalmente.</p>
+                                    </div>
+                                    
+                                    {/* Links Rápidos */}
+                                    <div>
+                                        <h4 className="text-white font-bold text-lg mb-4">Menu Rápido</h4>
+                                        <ul className="space-y-2 text-sm">
+                                            <li><button onClick={() => setPasso(0)} className="hover:text-green-400 transition">Início</button></li>
+                                            <li><button onClick={() => setPasso(1)} className="hover:text-green-400 transition">Produtos</button></li>
+                                            <li><a href="#" className="hover:text-green-400 transition">Fale Conosco</a></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    {/* Contato */}
+                                    <div>
+                                        <h4 className="text-white font-bold text-lg mb-4">Suporte</h4>
+                                        <div className="space-y-3 text-sm">
+                                            <p>📧 contato@brasilfanstore.com.br</p>
+                                            <p>📱 (11) 9 8765-4321</p>
+                                            <p>💬 WhatsApp 24h</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Benefícios */}
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                                    <div className="text-center">
+                                        <div className="text-2xl mb-2">🚚</div>
+                                        <p className="text-xs font-semibold text-gray-300">Frete Grátis</p>
+                                        <p className="text-xs text-gray-500">Acima de R$250</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl mb-2">⚡</div>
+                                        <p className="text-xs font-semibold text-gray-300">Entrega Rápida</p>
+                                        <p className="text-xs text-gray-500">3-5 dias úteis</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl mb-2">💳</div>
+                                        <p className="text-xs font-semibold text-gray-300">Até 12x</p>
+                                        <p className="text-xs text-gray-500">Sem juros</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl mb-2">🔒</div>
+                                        <p className="text-xs font-semibold text-gray-300">100% Seguro</p>
+                                        <p className="text-xs text-gray-500">Compra protegida</p>
+                                    </div>
+                                </div>
+
+                                {/* Copyright */}
+                                <div className="border-t border-gray-700 pt-8 text-center">
+                                    <p className="mb-2 text-sm">© 2024 Brasil Fan Store - Loja Oficial da Seleção Brasileira</p>
+                                    <p className="text-xs text-gray-500">Feito com 💚 para torcedores brasileiros | Todos os direitos reservados</p>
+                                </div>
+                            </div>
                         </footer>
                     </div>
+                    </>
                 );
             }
 
@@ -371,41 +655,50 @@
                 const produto = selecionado || PRODUTOS[0];
 
                 return (
-                    <div className="bg-white min-h-screen">
-                        <header className="sticky top-0 z-50 bg-white shadow-lg">
-                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                    <>
+                        <SideDrawer />
+                        <div className="bg-white min-h-screen">
+                        <header className="sticky top-0 z-50 bg-white shadow-lg border-b-2 border-green-50">
+                            <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center">
                                 <button onClick={() => { setPasso(0); setSelecionado(null); }} className="text-2xl hover:scale-110">←</button>
-                                <h1 className="text-xl font-bold">Passo 1 de 5</h1>
-                                <div></div>
+                                <h1 className="text-xl font-bold">Passo 1 de 5: Selecione</h1>
+                                <button onClick={() => setPasso(2)} className="relative group">
+                                    <div className="text-2xl md:text-3xl group-hover:scale-125 transition-transform duration-300">🛒</div>
+                                    {carrinho.length > 0 && (
+                                        <span className="absolute -top-3 -right-3 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-full w-6 h-6 md:w-7 md:h-7 flex items-center justify-center text-xs font-bold shadow-lg">
+                                            {carrinho.length}
+                                        </span>
+                                    )}
+                                </button>
                             </div>
                         </header>
 
-                        <div className="max-w-6xl mx-auto px-4 py-12">
+                        <div className="max-w-6xl mx-auto px-4 py-8 md:py-12">
                             <div className="step-indicator">
                                 {[1,2,3,4,5].map((i) => <div key={i} className={`step ${i === 1 ? 'active' : ''}`}></div>)}
                             </div>
 
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 mb-8 md:mb-12">
                                 <div className="flex items-center justify-center">
-                                    <img src={produto.imagem} alt={produto.nome} className="product-image w-full max-w-md" />
+                                    <img src={produto.imagem} alt={produto.nome} className="product-image w-full max-w-xs md:max-w-md" />
                                 </div>
 
-                                <div className="space-y-8">
+                                <div className="space-y-6 md:space-y-8">
                                     <div>
-                                        <h2 className="text-5xl font-black mb-2">{produto.nome}</h2>
+                                        <h2 className="text-3xl md:text-5xl font-black mb-2">{produto.nome}</h2>
                                         <div className="accent-line"></div>
-                                        <p className="text-2xl text-gray-600 mt-4">{produto.subtitulo}</p>
+                                        <p className="text-lg md:text-2xl text-gray-600 mt-4">{produto.subtitulo}</p>
                                     </div>
 
                                     {/* Tamanho */}
                                     <div>
-                                        <label className="block text-sm font-bold uppercase tracking-wider mb-4">Tamanho</label>
-                                        <div className="flex gap-3 flex-wrap">
+                                        <label className="block text-xs md:text-sm font-bold uppercase tracking-wider mb-3 md:mb-4">Tamanho</label>
+                                        <div className="flex gap-2 md:gap-3 flex-wrap">
                                             {TAMANHOS.map(t => (
                                                 <button
                                                     key={t}
                                                     onClick={() => setTamanho(t)}
-                                                    className={`w-14 h-14 rounded-lg font-bold transition-all ${
+                                                    className={`w-10 h-10 md:w-14 md:h-14 rounded-lg font-bold transition-all text-sm md:text-base ${
                                                         tamanho === t
                                                             ? 'bg-green-600 text-white shadow-lg scale-105'
                                                             : 'bg-gray-100 hover:bg-gray-200'
@@ -419,18 +712,18 @@
 
                                     {/* Quantidade */}
                                     <div>
-                                        <label className="block text-sm font-bold uppercase tracking-wider mb-4">Quantidade</label>
-                                        <div className="flex items-center gap-6">
+                                        <label className="block text-xs md:text-sm font-bold uppercase tracking-wider mb-3 md:mb-4">Quantidade</label>
+                                        <div className="flex items-center gap-4 md:gap-6">
                                             <button
                                                 onClick={() => setQuantidade(Math.max(1, quantidade - 1))}
-                                                className="w-12 h-12 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-xl"
+                                                className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-lg md:text-xl"
                                             >
                                                 −
                                             </button>
-                                            <span className="text-4xl font-black">{quantidade}</span>
+                                            <span className="text-2xl md:text-4xl font-black">{quantidade}</span>
                                             <button
                                                 onClick={() => setQuantidade(quantidade + 1)}
-                                                className="w-12 h-12 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-xl"
+                                                className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-lg md:text-xl"
                                             >
                                                 +
                                             </button>
@@ -438,18 +731,18 @@
                                     </div>
 
                                     {/* Preço */}
-                                    <div className="bg-gradient-to-br from-yellow-50 to-green-50 p-8 rounded-lg border-2 border-green-200">
-                                        <p className="text-gray-600 mb-2">Valor Total</p>
-                                        <div className="price-tag text-4xl">R$ {(produto.preco * quantidade).toFixed(2)}</div>
+                                    <div className="bg-gradient-to-br from-yellow-50 to-green-50 p-6 md:p-8 rounded-lg border-2 border-green-200">
+                                        <p className="text-gray-600 mb-2 text-sm md:text-base">Valor Total</p>
+                                        <div className="price-tag text-2xl md:text-4xl">R$ {(produto.preco * quantidade).toFixed(2)}</div>
                                     </div>
 
                                     <button
                                         onClick={() => {
                                             setCarrinho([...carrinho, { ...produto, quantidade, tamanho, id: Date.now() }]);
                                             setQuantidade(1);
-                                            alert('✓ Adicionado ao carrinho!');
+                                            setCarrinhoAberto(true);
                                         }}
-                                        className="w-full btn-primary py-4 text-lg"
+                                        className="w-full btn-primary py-3 md:py-4 text-base md:text-lg"
                                     >
                                         🛒 Adicionar ao Carrinho
                                     </button>
@@ -457,24 +750,25 @@
                             </div>
 
                             {/* Outros */}
-                            <div className="mt-12">
-                                <h3 className="text-3xl font-black mb-6">Veja Também</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="mt-8 md:mt-12">
+                                <h3 className="text-2xl md:text-3xl font-black mb-4 md:mb-6">Veja Também</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                                     {PRODUTOS.filter(p => p.id !== produto.id).map(prod => (
                                         <button
                                             key={prod.id}
                                             onClick={() => setSelecionado(prod)}
                                             className="card-premium text-center"
                                         >
-                                            <img src={prod.imagem} alt={prod.nome} className="product-image mb-4 w-full" />
-                                            <h4 className="text-2xl font-bold mb-2">{prod.nome}</h4>
-                                            <div className="price-tag">{prod.preco.toFixed(2)}</div>
+                                            <img src={prod.imagem} alt={prod.nome} className="product-image mb-3 md:mb-4 w-full" />
+                                            <h4 className="text-lg md:text-2xl font-bold mb-2">{prod.nome}</h4>
+                                            <div className="price-tag text-lg md:text-xl">R$ {prod.preco.toFixed(2)}</div>
                                         </button>
                                     ))}
                                 </div>
                             </div>
                         </div>
                     </div>
+                    </>
                 );
             }
 
@@ -482,11 +776,18 @@
             if (passo === 2) {
                 return (
                     <div className="bg-white min-h-screen">
-                        <header className="sticky top-0 z-50 bg-white shadow-lg">
-                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                        <header className="sticky top-0 z-50 bg-white shadow-lg border-b-2 border-green-50">
+                            <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center">
                                 <button onClick={() => setPasso(1)} className="text-2xl">←</button>
                                 <h1 className="text-xl font-bold">Passo 2 de 5: Carrinho</h1>
-                                <div></div>
+                                <button onClick={() => setPasso(2)} className="relative group">
+                                    <div className="text-2xl md:text-3xl group-hover:scale-125 transition-transform duration-300">🛒</div>
+                                    {carrinho.length > 0 && (
+                                        <span className="absolute -top-3 -right-3 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-full w-6 h-6 md:w-7 md:h-7 flex items-center justify-center text-xs font-bold shadow-lg">
+                                            {carrinho.length}
+                                        </span>
+                                    )}
+                                </button>
                             </div>
                         </header>
 
@@ -554,11 +855,18 @@
             if (passo === 3) {
                 return (
                     <div className="bg-white min-h-screen">
-                        <header className="sticky top-0 z-50 bg-white shadow-lg">
-                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                        <header className="sticky top-0 z-50 bg-white shadow-lg border-b-2 border-green-50">
+                            <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center">
                                 <button onClick={() => setPasso(2)} className="text-2xl">←</button>
                                 <h1 className="text-xl font-bold">Passo 3 de 5: Checkout</h1>
-                                <div></div>
+                                <button onClick={() => setPasso(2)} className="relative group">
+                                    <div className="text-2xl md:text-3xl group-hover:scale-125 transition-transform duration-300">🛒</div>
+                                    {carrinho.length > 0 && (
+                                        <span className="absolute -top-3 -right-3 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-full w-6 h-6 md:w-7 md:h-7 flex items-center justify-center text-xs font-bold shadow-lg">
+                                            {carrinho.length}
+                                        </span>
+                                    )}
+                                </button>
                             </div>
                         </header>
 
@@ -655,11 +963,18 @@
             if (passo === 4) {
                 return (
                     <div className="bg-white min-h-screen">
-                        <header className="sticky top-0 z-50 bg-white shadow-lg">
-                            <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                        <header className="sticky top-0 z-50 bg-white shadow-lg border-b-2 border-green-50">
+                            <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center">
                                 <button onClick={() => setPasso(3)} className="text-2xl">←</button>
                                 <h1 className="text-xl font-bold">Passo 4 de 5: Pagamento</h1>
-                                <div></div>
+                                <button onClick={() => setPasso(2)} className="relative group">
+                                    <div className="text-2xl md:text-3xl group-hover:scale-125 transition-transform duration-300">🛒</div>
+                                    {carrinho.length > 0 && (
+                                        <span className="absolute -top-3 -right-3 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-full w-6 h-6 md:w-7 md:h-7 flex items-center justify-center text-xs font-bold shadow-lg">
+                                            {carrinho.length}
+                                        </span>
+                                    )}
+                                </button>
                             </div>
                         </header>
 
